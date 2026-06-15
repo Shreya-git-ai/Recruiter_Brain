@@ -61,3 +61,12 @@ for c in test_candidates:
 
 print()
 print(f"Total filtered out of {len(test_candidates)}: {filtered_count}")
+from src.signal_score import compute_signal_score
+
+print()
+print("--- Signal Score Test (first 5 candidates) ---")
+for c in candidates:
+    score = compute_signal_score(c)
+    last_active = c.get("redrob_signals", {}).get("last_active_date")
+    response_rate = c.get("redrob_signals", {}).get("recruiter_response_rate")
+    print(f"{c['candidate_id']}: signal_score={score}, last_active={last_active}, response_rate={response_rate}")
