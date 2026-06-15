@@ -1,0 +1,9 @@
+venv/
+
+data/candidates.jsonl
+data/candidates.jsonl.gz
+
+outputs/
+
+__pycache__/
+.ipynb_checkpoints/
