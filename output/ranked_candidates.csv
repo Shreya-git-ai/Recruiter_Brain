@@ -1,0 +1,9 @@
+rank,candidate_id,final_score,reasoning
+1,CAND_0049896,1.0,"7.3 yrs experience, currently Search Engineer at Unacademy (EdTech). Profile-JD semantic fit: 0.99, career relevance: 0.90. Last active 2026-05-17, recruiter response rate 43%."
+2,CAND_0007009,1.0,"7.9 yrs experience, currently Recommendation Systems Engineer at Wysa (HealthTech AI). Profile-JD semantic fit: 0.78, career relevance: 1.00. Last active 2026-03-19, recruiter response rate 62%."
+3,CAND_0086151,1.0,"7.7 yrs experience, currently Recommendation Systems Engineer at Wysa (HealthTech AI). Profile-JD semantic fit: 0.90, career relevance: 1.00. Last active 2026-03-23, recruiter response rate 52%."
+4,CAND_0069905,1.0,"6.6 yrs experience, currently Applied ML Engineer at Sarvam AI (AI/ML). Profile-JD semantic fit: 0.82, career relevance: 1.00. Last active 2026-04-21, recruiter response rate 78%."
+5,CAND_0076251,1.0,"7.6 yrs experience, currently Search Engineer at Haptik (Conversational AI). Profile-JD semantic fit: 0.89, career relevance: 1.00. Last active 2026-04-15, recruiter response rate 51%."
+6,CAND_0018549,0.9937999844551086,"6.8 yrs experience, currently Recommendation Systems Engineer at Uber (Transportation). Profile-JD semantic fit: 0.90, career relevance: 0.90. Last active 2026-04-28, recruiter response rate 73%."
+7,CAND_0081852,0.9879999756813049,"5.9 yrs experience, currently Senior Data Scientist at Mad Street Den (AI/ML). Profile-JD semantic fit: 0.96, career relevance: 0.89. Last active 2026-05-23, recruiter response rate 44%."
+8,CAND_0055905,0.9797000288963318,"8.1 yrs experience, currently Senior Machine Learning Engineer at Flipkart (E-commerce). Profile-JD semantic fit: 0.83, career relevance: 0.86. Last active 2026-05-17, recruiter response rate 87%."

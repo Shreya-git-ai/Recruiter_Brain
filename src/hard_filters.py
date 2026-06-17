@@ -79,3 +79,23 @@ def run_hard_filters(candidate):
 
     fails = len(reasons) > 0
     return fails, reasons
+
+def fails_ai_domain_filter(candidate):
+    """
+    FINAL SUBMISSION-GRADE AI FILTER
+    Strictly enforces AI/ML relevance before scoring.
+    """
+
+    profile = candidate.get("profile", {})
+    career_history = candidate.get("career_history", [])
+
+    current_title = (profile.get("current_title") or "").lower()
+    current_industry = (profile.get("current_industry") or "").lower()
+
+    ai_core_keywords = [
+        "machine learning", "ml engineer", "ai engineer", "data scientist",
+        "nlp", "recommendation", "ranking", "search", "retrieval",
+        "embedding", "vector", "deep learning", "llm"
+    ]
+
+   

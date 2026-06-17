@@ -2,10 +2,6 @@ from datetime import datetime
 
 
 def parse_datetime(date_str):
-    """
-    we will Parse a date string in the format 'YYYY-MM-DD' and returns a datetime object.
-
-    """
     if not date_str:
         return None
     try:
@@ -15,10 +11,6 @@ def parse_datetime(date_str):
 
 
 def check_signup_lastactive_dates(candidate):
-    """
-    we will check if last active date and signup date are logically consistent.
-    Last active date should not be before signup date.
-    """
     signals = candidate.get("redrob_signals", {})
     signup_date = parse_datetime(signals.get("signup_date"))
     last_active_date = parse_datetime(signals.get("last_active_date"))
@@ -35,10 +27,6 @@ def check_signup_lastactive_dates(candidate):
 
 
 def check_experience(candidate):
-    """
-    lets check if years of experience are realistically possible.
-    we will be checking the experience with education start year.
-    """
     profile = candidate.get("profile", {})
     year_exp = profile.get("years_of_experience", 0)
 
@@ -61,10 +49,6 @@ def check_experience(candidate):
 
 
 def check_overlapping_jobs(candidate):
-    """
-    we will check two things if two jobs have is_current field true at the same time.
-    secondly , we will check if any two jobs have overlapping date ranges.
-    """
     career_history = candidate.get("career_history", [])
 
     current_jobs = [job for job in career_history if job.get("is_current")]
@@ -99,11 +83,6 @@ def check_overlapping_jobs(candidate):
 
 
 def check_skill_duration_mismatch(candidate):
-    """
-    another honeypot will be skill duration mismatch with years of experience duration.
-    we are giving lease of 2 years of skill duration more than total career duration to account for
-    skill learning before career start.
-    """
     career_history = candidate.get("career_history", [])
     total_months = sum(job.get("duration_months", 0) for job in career_history)
 
@@ -121,10 +100,6 @@ def check_skill_duration_mismatch(candidate):
 
 
 def run_honeypot_checks(candidate):
-    """
-    we will combine all honeypot checks into single function .
-    the function shall return boolean and reasons for flagging if any.
-    """
     checks = [
         check_signup_lastactive_dates,
         check_experience,

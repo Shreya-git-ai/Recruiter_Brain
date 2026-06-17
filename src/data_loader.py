@@ -15,12 +15,11 @@ def load_candidates(filepath, limit=None):
         opener = open(filepath, "r", encoding="utf-8")
 
     with opener as f:
-        for line in f:
-            if limit is not None and len(candidates) >= limit:
+        for i, line in enumerate(f):
+            if limit and i >= limit:
                 break
-            candidate = json.loads(line)
-            candidates.append(candidate)
-            
+            if line.strip():
+                candidates.append(json.loads(line))
 
     return candidates
 

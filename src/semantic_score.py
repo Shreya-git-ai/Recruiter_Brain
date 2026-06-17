@@ -1,3 +1,7 @@
+import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
+
+
 JD_FOCUS_TEXT = """
 Senior AI Engineer at a Series A AI-native talent intelligence platform.
 The ideal candidate has 6-8 years of total experience, with 4-5 years in applied
@@ -17,17 +21,7 @@ vision, speech, or robotics.
 """
 
 
-import numpy as np
-from sklearn.metrics.pairwise import cosine_similarity
-
-
 def compute_semantic_scores(jd_embedding, candidate_embeddings):
-    """
-    jd_embedding: shape (embedding_dim,) - single vector for JD
-    candidate_embeddings: shape (n_candidates, embedding_dim) - matrix
-
-    Returns: array of similarity scores (0-1), one per candidate.
-    """
     sims = cosine_similarity(jd_embedding.reshape(1, -1), candidate_embeddings)[0]
     sims = np.clip(sims, 0, 1)
     return sims
