@@ -55,13 +55,7 @@ def coding_recency_score(candidate):
 
 def compute_red_flag_penalty(candidate):
     """
-    Returns a deduction (0 to ~0.3) to SUBTRACT from technical_fit,
-    rather than a multiplier. This way, a single red flag reduces
-    score moderately without being able to collapse a strong candidate.
+    Multiplicative penalty (0.36 to 1.0) from title-chasing and
+    non-coding-recency red flags.
     """
-    deduction = 0.0
-    if title_chaser_score(candidate) < 1.0:
-        deduction += 0.15
-    if coding_recency_score(candidate) < 1.0:
-        deduction += 0.15
-    return deduction
+    return title_chaser_score(candidate) * coding_recency_score(candidate)

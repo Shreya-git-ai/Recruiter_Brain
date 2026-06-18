@@ -1,12 +1,15 @@
-def compute_final_score(semantic_score, keyword_score, red_flag_deduction, signal_score):
+def compute_final_score(semantic_score, keyword_score, red_flag_penalty, signal_score):
+    """
+    technical_fit blends meaning-based similarity (primary signal) with
+    domain-specific keyword evidence (secondary confidence boost).
+
+    red_flag_penalty (title-chasing, non-coding role) multiplies down.
+    availability_multiplier (behavioral signals) multiplies down further
+    with a floor of 0.5, so availability down-weights but never zeroes
+    out an otherwise strong candidate.
+    """
     technical_fit = 0.55 * semantic_score + 0.45 * keyword_score
-    
-    # Additive penalty - subtract, don't multiply, so one red flag 
-    # doesn't collapse an otherwise strong candidate
-    adjusted_fit = max(0.0, technical_fit - red_flag_deduction)
-    
-    # Multiplicative availability with floor - soft down-weight, never zero
     availability_multiplier = 0.5 + 0.5 * signal_score
-    
-    final = adjusted_fit * availability_multiplier
+
+    final = technical_fit * red_flag_penalty * availability_multiplier
     return round(final, 4)
