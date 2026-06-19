@@ -17,7 +17,7 @@ def keyword_match_score(candidate):
 
     all_text = " ".join((job.get("description") or "").lower() for job in career_history)
     hits = sum(1 for kw in AI_ML_KEYWORDS if kw in all_text)
-    score = min(hits / 4, 1.0)
+    score = min(hits / 7, 1.0)  # changed from /4 to /7
     return score
 
 
