@@ -22,7 +22,7 @@ def run_pipeline(candidates_path, output_path, embeddings_path, ids_path, limit=
 
     t1 = time.time()
     print("Loading precomputed embeddings...")
-    all_embeddings = np.load(embeddings_path)
+    all_embeddings = np.load(embeddings_path, allow_pickle=True)
     all_ids = np.load(ids_path, allow_pickle=True)
     id_to_embedding = {cid: emb for cid, emb in zip(all_ids, all_embeddings)}
     print(f"Loaded {len(id_to_embedding)} precomputed embeddings in {time.time()-t1:.1f}s")
@@ -41,22 +41,16 @@ def run_pipeline(candidates_path, output_path, embeddings_path, ids_path, limit=
     for candidate in candidates:
         is_honeypot, _ = run_honeypot_checks(candidate)
         fails_filters, _ = run_hard_filters(candidate)
-
         if is_honeypot or fails_filters:
             excluded_count += 1
             continue
-
         valid_candidates.append(candidate)
 
     print(f"Filtering done in {time.time()-t3:.1f}s. Excluded {excluded_count}, {len(valid_candidates)} remain")
 
     t4 = time.time()
-    print("Looking up precomputed embeddings for valid candidates...")
-    valid_embeddings = []
-    for c in valid_candidates:
-        cid = c["candidate_id"]
-        valid_embeddings.append(id_to_embedding[cid])
-    valid_embeddings = np.array(valid_embeddings)
+    print("Looking up precomputed embeddings...")
+    valid_embeddings = np.array([id_to_embedding[c["candidate_id"]] for c in valid_candidates])
     print(f"Lookup done in {time.time()-t4:.1f}s")
 
     t5 = time.time()
@@ -72,7 +66,6 @@ def run_pipeline(candidates_path, output_path, embeddings_path, ids_path, limit=
         kw_score = keyword_match_score(candidate)
         red_flag = compute_red_flag_penalty(candidate)
         signal = compute_signal_score(candidate)
-
         final = compute_final_score(sem_score, kw_score, red_flag, signal)
 
         score_dict = {
@@ -93,12 +86,10 @@ def run_pipeline(candidates_path, output_path, embeddings_path, ids_path, limit=
     print(f"Scoring loop done in {time.time()-t6:.1f}s")
 
     t7 = time.time()
-    print(f"Sorting and selecting top {top_n} candidates...")
     results_df = pd.DataFrame(results)
     results_df = results_df.sort_values(by=["score", "candidate_id"], ascending=[False, True]).head(top_n)
     results_df = results_df.reset_index(drop=True)
     results_df.insert(1, "rank", results_df.index + 1)
-
     output_df = results_df[["candidate_id", "rank", "score", "reasoning"]]
 
     out_dir = os.path.dirname(output_path)
