@@ -11,23 +11,28 @@ from src.pipeline import run_pipeline
 
 st.set_page_config(page_title="Recruiter Brain", layout="wide", page_icon="🧠")
 
+# Detect whether full dataset or demo dataset is available
+if os.path.exists("data/candidates.jsonl") and os.path.exists("data/candidate_embeddings.npy"):
+    DEFAULT_CANDIDATES_PATH = "data/candidates.jsonl"
+    DEFAULT_EMBEDDINGS_PATH = "data/candidate_embeddings.npy"
+    DEFAULT_IDS_PATH = "data/candidate_ids.npy"
+    MAX_SAMPLE = 2000
+else:
+    DEFAULT_CANDIDATES_PATH = "data/candidates_demo.jsonl"
+    DEFAULT_EMBEDDINGS_PATH = "data/candidate_embeddings_demo.npy"
+    DEFAULT_IDS_PATH = "data/candidate_ids_demo.npy"
+    MAX_SAMPLE = 200
+
 if "results_df" not in st.session_state:
     st.session_state["results_df"] = None
 if "selected" not in st.session_state:
     st.session_state["selected"] = None
 
 st.title("🧠 Recruiter Brain")
+st.caption("Explainable candidate ranking, built for the Redrob Hackathon")
 
-
-st.markdown("""
-### Explainable AI-Powered Talent Matching
-
-Identify the most relevant candidates using semantic search,
-career-fit analysis, hiring signals, and profile-quality screening.
-
-Built to rank large candidate pools efficiently while maintaining
-transparent recruiter-friendly explanations.
-""")
+if DEFAULT_CANDIDATES_PATH.endswith("_demo.jsonl"):
+    st.caption("⚠️ Running on a demo sample dataset (full 100K dataset not bundled with this deployment).")
 
 st.divider()
 
@@ -64,18 +69,18 @@ st.divider()
 st.markdown("### Run the Matching Engine")
 col_a, col_b = st.columns([2, 1])
 with col_a:
-    sample_size = st.slider("Candidate sample size", 50, 2000, 200, step=50)
+    sample_size = st.slider("Candidate sample size", 10, MAX_SAMPLE, min(200, MAX_SAMPLE), step=10)
 with col_b:
-    top_n = st.slider("Top N (capped at 100 per competition rules)", 5, 100, 100, step=5)
+    top_n = st.slider("Top N (capped at 100 per competition rules)", 5, 100, min(20, MAX_SAMPLE), step=5)
 
 if st.button("🚀 Run Matching Engine", use_container_width=True, type="primary"):
     with st.spinner("Running ranking pipeline..."):
         try:
             result_df = run_pipeline(
-                candidates_path="data/candidates.jsonl",
+                candidates_path=DEFAULT_CANDIDATES_PATH,
                 output_path="outputs/streamlit_output.csv",
-                embeddings_path="data/candidate_embeddings.npy",
-                ids_path="data/candidate_ids.npy",
+                embeddings_path=DEFAULT_EMBEDDINGS_PATH,
+                ids_path=DEFAULT_IDS_PATH,
                 limit=sample_size,
                 top_n=top_n,
             )
@@ -83,11 +88,8 @@ if st.button("🚀 Run Matching Engine", use_container_width=True, type="primary
             st.session_state["selected"] = None
             st.success(f"Done! Ranked top {len(result_df)} candidates. Go to **Ranking Results** in the sidebar to view them.")
         except FileNotFoundError as e:
-            st.error(f"Missing file: {e}. Run precompute_embeddings.py first.")
+            st.error(f"Missing file: {e}")
         except Exception as e:
-            import traceback
-
             st.error(f"Pipeline error: {e}")
-            st.code(traceback.format_exc(),language="python")
 
 st.info("👈 Use the sidebar to navigate to Job Description, Ranking Results, Stats, or About.")
