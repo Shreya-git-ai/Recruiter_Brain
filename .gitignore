@@ -1,14 +1,9 @@
 venv/
 __pycache__/
 *.pyc
-
 data/candidates.jsonl
 data/candidates.jsonl.gz
-
-output/*.csv
+data/candidate_embeddings.npy
+data/candidate_ids.npy
 outputs/*.csv
-
-data/*.npy
-*.tmp.npy
-
 .vscode/
