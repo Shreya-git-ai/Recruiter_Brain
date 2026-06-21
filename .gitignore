@@ -7,3 +7,8 @@ data/candidate_embeddings.npy
 data/candidate_ids.npy
 outputs/*.csv
 .vscode/
+.DS_Store
+Thumbs.db
+
+# Streamlit cache
+.streamlit/secrets.toml
