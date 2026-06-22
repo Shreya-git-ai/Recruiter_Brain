@@ -17,10 +17,11 @@ if os.path.exists("data/candidates.jsonl") and os.path.exists("data/candidate_em
     DEFAULT_EMBEDDINGS_PATH = "data/candidate_embeddings.npy"
     DEFAULT_IDS_PATH = "data/candidate_ids.npy"
     MAX_SAMPLE = 2000
+
 else:
-    DEFAULT_CANDIDATES_PATH = "data/candidates_demo.jsonl"
-    DEFAULT_EMBEDDINGS_PATH = "data/candidate_embeddings_demo.npy"
-    DEFAULT_IDS_PATH = "data/candidate_ids_demo.npy"
+    DEFAULT_CANDIDATES_PATH = "data/demo_candidates.jsonl"
+    DEFAULT_EMBEDDINGS_PATH = "data/demo_candidate_embeddings.npy"
+    DEFAULT_IDS_PATH = "data/demo_candidate_ids.npy"
     MAX_SAMPLE = 200
 
 if "results_df" not in st.session_state:
