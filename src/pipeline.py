@@ -8,9 +8,9 @@ from src.data_loader import load_candidates, build_candidate_text
 from src.honeypot_detector import run_honeypot_checks
 from src.hard_filters import run_hard_filters
 from src.career_fit_score import keyword_match_score, compute_red_flag_penalty
-from src.signal_score import compute_signal_score
+from src.signal_score import compute_signal_score, compute_location_penalty
 from src.semantic_score import compute_semantic_scores, JD_FOCUS_TEXT
-from src.combine import compute_final_score
+from src.combine import compute_final_score, compute_experience_penalty
 from src.reasoning import generate_reasoning
 
 
@@ -66,7 +66,10 @@ def run_pipeline(candidates_path, output_path, embeddings_path, ids_path, limit=
         kw_score = keyword_match_score(candidate)
         red_flag = compute_red_flag_penalty(candidate)
         signal = compute_signal_score(candidate)
-        final = compute_final_score(sem_score, kw_score, red_flag, signal)
+        location = compute_location_penalty(candidate)
+        exp_pen = compute_experience_penalty(candidate)
+
+        final = compute_final_score(sem_score, kw_score, red_flag, signal, location, exp_pen)
 
         score_dict = {
             "semantic_score": float(sem_score),
@@ -90,6 +93,7 @@ def run_pipeline(candidates_path, output_path, embeddings_path, ids_path, limit=
     results_df = results_df.sort_values(by=["score", "candidate_id"], ascending=[False, True]).head(top_n)
     results_df = results_df.reset_index(drop=True)
     results_df.insert(1, "rank", results_df.index + 1)
+
     output_df = results_df[["candidate_id", "rank", "score", "reasoning"]]
 
     out_dir = os.path.dirname(output_path)
