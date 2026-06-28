@@ -18,6 +18,8 @@ def run_pipeline(candidates_path, output_path, embeddings_path, ids_path, limit=
     t0 = time.time()
     print("Loading candidates...")
     candidates = load_candidates(candidates_path, limit=limit)
+    print("Candidates path:", candidates_path)
+    print("Loaded candidates:", len(candidates))
     print(f"Loaded {len(candidates)} candidates in {time.time()-t0:.1f}s")
 
     t1 = time.time()
