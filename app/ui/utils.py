@@ -61,7 +61,7 @@ def detect_dataset_paths():
  
     if all(os.path.exists(p) for p in full):
         return full[0], full[1], full[2], 2000, False
-    return demo[0], demo[1], demo[2], 200, True
+    return demo[0], demo[1], demo[2], 200, False
  
  
 def format_score_color(score):
