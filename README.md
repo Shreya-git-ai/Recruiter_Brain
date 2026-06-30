@@ -190,5 +190,4 @@ Python · NumPy · Pandas · Sentence Transformers · Hugging Face Transformers 
 
 ## About
 
-Built by **Shreya Chaturvedi**, 1st-year CS (AI/ML) student. Originally developed for an AI hiring and talent-matching challenge, then refined into a generalized, scalable candidate-ranking system.
-
+Built by Shreya Chaturvedi, 1st-year CS (AI/ML) student. Originally developed for an AI hiring and talent-matching challenge, then refined into a generalized, scalable candidate-ranking system.
